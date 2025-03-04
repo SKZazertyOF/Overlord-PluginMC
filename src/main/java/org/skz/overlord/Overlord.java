@@ -11,6 +11,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.skz.overlord.commands.*;
 import org.skz.overlord.listener.MainListener;
+import org.skz.overlord.other.CustomBlockData;
 import org.skz.overlord.other.ProtectedRegion;
 
 import java.util.ArrayList;
@@ -32,7 +33,8 @@ public final class Overlord extends JavaPlugin {
         registerListeners();
         initializeScoreboard();
 
-        logInfo("Command ResetDeathScoreBoard initialized");
+
+        logInfo("Version de Spigot: " + Bukkit.getServer().getBukkitVersion());
         logInfo(ChatColor.DARK_AQUA + "Plugin: " + ChatColor.DARK_PURPLE + "[OVERLORD]" + ChatColor.DARK_GREEN + " has been enabled");
     }
 
@@ -44,11 +46,22 @@ public final class Overlord extends JavaPlugin {
     }
 
     private void registerCommands() {
+        logInfo("Command region initialized");
+        logInfo("Command protect initialized");
+        logInfo("Command wando initialized");
+        logInfo("Command createnewworld initialized");
+        logInfo("Command resetdeaths initialized");
+        logInfo("Command bsave initialized");
+        logInfo("Command bload initialized");
+
         getCommand("resetdeaths").setExecutor(new ResetDeathScoreBoard());
         getCommand("createnewworld").setExecutor(new CreateNewWorld());
         getCommand("wando").setExecutor(new GiveWandProtect());
         getCommand("protect").setExecutor(new ProtectRegion(this));
         getCommand("region").setExecutor(new RegionCommand(this));
+        getCommand("bsave").setExecutor(new BSaveCommand(this));
+        getCommand("bload").setExecutor(new BLoadCommand(this));
+        getCommand("bundo").setExecutor(new BUndoCommand(this));
     }
 
     private void registerListeners() {
@@ -122,6 +135,34 @@ public final class Overlord extends JavaPlugin {
         }
     }
 
+    private List<CustomBlockData> undoData = new ArrayList<>();
+
+    public void addUndoData(List<CustomBlockData> data) {
+        undoData.addAll(data);
+    }
+
+    public List<CustomBlockData> getUndoData() {
+        return undoData;
+    }
+
+    public void clearUndoData() {
+        undoData.clear();
+    }
+
+    private List<List<CustomBlockData>> undoHistory = new ArrayList<>();
+
+    public void addUndoAction(List<CustomBlockData> action) {
+        undoHistory.add(action);
+        // Limiter l'historique à 10 actions
+        if (undoHistory.size() > 10) {
+            undoHistory.remove(0);
+        }
+    }
+
+    public List<List<CustomBlockData>> getUndoHistory() {
+        return undoHistory;
+    }
+
     public Location getFirstPoint() {
         return firstPoint;
     }
@@ -140,7 +181,7 @@ public final class Overlord extends JavaPlugin {
 
     public void addProtectedRegion(ProtectedRegion region) {
         protectedRegions.add(region);
-        saveProtectedRegions(); // Save regions to config.yml
+        saveProtectedRegions();
     }
 
     public List<ProtectedRegion> getProtectedRegions() {
@@ -148,9 +189,7 @@ public final class Overlord extends JavaPlugin {
     }
 
     public void reloadProtectedRegions() {
-        // Implémente la logique pour recharger les régions depuis le fichier de configuration
-        // Par exemple, si tu utilises un fichier YAML :
-        // protectedRegions = loadFromConfig();
+        //.
     }
 
     public boolean isInAnyProtectedRegion(Location location) {

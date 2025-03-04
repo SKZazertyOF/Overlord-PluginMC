@@ -1,25 +1,27 @@
 name: Overlord
-version: '1.2'
+version: '1.1'
 main: org.skz.overlord.Overlord
 api-version: '1.21'
 authors:
   - SKZ_azerty
+  - Alpha
 permissions:
   permission.op:
-    description: 'Cette permission est réservée aux joueurs OP.'
     default: op
 commands:
   resetdeaths:
-    description: 'Commande de test pour le plugin.'
-    usage: '/resetdeaths'
     permission: permission.op
   createnewworld:
-    description:
-    usage: '/createnewworld <worldname>'
     permission: permission.op
   wando:
     permission: permission.op
   protect:
     permission: permission.op
   region:
+    permission: permission.op
+  bsave:
+    permission: permission.op
+  bload:
+    permission: permission.op
+  bundo:
     permission: permission.op
