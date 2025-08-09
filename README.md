@@ -61,7 +61,7 @@ protectedRegions:
 ### Authors
 
 - **SKZ_azerty** - Lead Developer, responsible for overall plugin architecture and implementation.
-- **Alpha** - Developer, assisted with the region command and other features.
+- **Alpha** - Tutor and architecture
 
 ### Contact
 
